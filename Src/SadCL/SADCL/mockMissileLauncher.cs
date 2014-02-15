@@ -5,28 +5,26 @@ using UsbLibrary;
 
 namespace SADCL
 {
-    public class missileLauncher:MissileLauncher
+    public class mockMissileLauncher:MissileLauncher, ImissileCommand
     {
 
-        public override int getMissles()
+        public int load //begin load function
         {
-            return missiles;
-
-        }
-        public override void setMissles()
+            get { return missiles; }
+            set
+            {
+                missiles = value;
+            }
+        } //end load function
+        public string Name
         {
-            missiles = 4;
-
+            get { return name; }
+            set
+            {
+                name = value;
+            }
         }
-        public override string getName()
-        {
-            return name;
-        }
-        public override void setName(string value)
-        {
-            name = value;
-        }
-        public missileLauncher()
+        public mockMissileLauncher()
         {
 
             this.UP = new byte[10];
@@ -86,48 +84,70 @@ namespace SADCL
 
         public override void command_Right(int degrees)
         {
-            degrees = degrees * 20;
-            this.moveMissileLauncher(this.RIGHT, degrees);
+            Console.Write("Moved to the right by " + degrees + " degrees Captain!\n");
+            
+            //degrees = degrees * 20;
+            //this.moveMissileLauncher(this.RIGHT, degrees);
         }
 
         public override void command_Left(int degrees)
         {
-            degrees = degrees * 20;
-            this.moveMissileLauncher(this.LEFT, degrees);
+            Console.Write("Moved to the left by " + degrees + " degrees Captain!\n");
+            //degrees = degrees * 20;
+            //this.moveMissileLauncher(this.LEFT, degrees);
         }
 
         public override void command_Up(int degrees)
         {
-            degrees = degrees * 20;
-            this.moveMissileLauncher(this.UP, degrees);
+            Console.Write("Moved up angle by " + degrees + " degrees Captain!\n");
+            //degrees = degrees * 20;
+            //this.moveMissileLauncher(this.UP, degrees);
         }
 
         public override void command_Down(int degrees)
         {
-            degrees = degrees * 20;
-            this.moveMissileLauncher(this.DOWN, degrees);
+            Console.Write("Moved down angle by " + degrees + " degrees Captain!\n");
+            //degrees = degrees * 20;
+            //this.moveMissileLauncher(this.DOWN, degrees);
         }
 
         public override void command_Fire()
         {
-            //this.moveIMissileLauncher(this.FIRE, 5000);
+            
             if (missiles <= 0)
             {
-                Console.WriteLine("I just can't do it cap'tin, we just don't have the power.");
+                Console.WriteLine("I just can't do it cap'tin, we just don't have the power.\n");
             }
             else
             {
-                this.moveMissileLauncher(this.FIRE, 5000);
-                
+                Console.WriteLine("Ka-BOOM\n");
             }
 
             missiles--;  // decrease the missiles available
         }
-        public override void reload() 
+        public override void reload()
         {
             missiles = 4;
         }
 
+        public override int getMissles()
+        {
+            return missiles;
+
+        }
+        public override void setMissles()
+        {
+            missiles = 4;
+
+        }
+        public override string getName()
+        {
+            return name;
+        }
+        public override void setName(string value)
+        {
+            name = value;
+        }
         public override void command_switchLED(Boolean turnOn)
         {
             if (DevicePresent)
@@ -160,7 +180,7 @@ namespace SADCL
         {
             if (DevicePresent)
             {
-               
+
                 this.command_switchLED(true);
                 this.SendUSBData(Data);
                 Thread.Sleep(interval);

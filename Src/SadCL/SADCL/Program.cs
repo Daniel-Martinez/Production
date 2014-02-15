@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace SADCL
 {
-    class Program
+    class program
     {
         static void Main(string[] args)
         {
@@ -23,6 +23,7 @@ namespace SADCL
             {
 
                 System.Console.WriteLine("Que Queres? I need path to input file!\n");    //outputs that the arugment is invalid.
+                Thread.Sleep(5000);
                 return;
 
             }
@@ -38,21 +39,36 @@ namespace SADCL
             }
             else
             {
-                
-                
-                List<Target> targetList = targetFactory.Product(path);    //object targetList is a product of Factory containing all Target data read in from file
-                //bool done = false;
-                missileCommand Poseidon = new missileCommand();  // missile launcher is created
-                Poseidon.load = 4;                               // fully loaded and ready to fire. 
-                string input = "";                               //user input
+                /********************************************************************************************************************************************************************/
+                //This body of the code defines our variables and creates the objects that we need to operate the ConmadLine Missle Launcher.
+                /********************************************************************************************************************************************************************/
+
+                List<target> targetList = targetFactory.Product(path);    //object targetList is a product of Factory containing all Target data read in from file
+
+                singleton tempObj = singleton.getInstance();              //creating a singlton object to keep track of out target list with status of whos dead and whos at large
+                List<target> statusList = tempObj.getList();
+
+                statusList = targetList;                                  //set our singleton List equal to list generated from our target factory.
+
+                missileFactory makeLauncher = new missileFactory();              // missile launcher is created
+
+                MissileLauncher Poseidon = makeLauncher.product();
+                                               // fully loaded and ready to fire. 
+                Poseidon.name = "Beef_Cake";                     // name turret
+                Poseidon.reload();
+                string input = "";
                 string convInput = "";                           //Holds value for string when Split
                 string enteredValue = "";                        //Holds user entered value for menu
                 string enteredValue2 = "";                       //Holds user entered value for menu
 
 
-
+                /********************************************************************************************************************************************************************/
+                //This body of the code is our Commands section based on users input
+                /********************************************************************************************************************************************************************/
+                
                 while (input != "exit")
                 {
+                                              //start off with full ammo
                     input = Console.ReadLine().ToLower();       // conver to lowercase
                     convInput = input.Split(' ')[0];            //user input is split on space for commands that require second text field 
 
@@ -68,7 +84,7 @@ namespace SADCL
                     {
                         enteredValue2 = input.Split(' ')[2];    //This will be used for Theta value for move and moveby methods
                     }
-                    else 
+                    else
                     {
                         enteredValue2 = "";
                     }
@@ -77,78 +93,74 @@ namespace SADCL
 
                     switch (convInput)
                     {
-                        
+
                         case "fire":
-                            Poseidon.fire();
+                            Poseidon.command_Fire();
                             break;
 
-                        case "reset":
-                            Poseidon.calibrate();
-                            break;
-                        
                         case "move":
-                            
+
                             double phi = 0;                         //create a value to store our phi, which is x,y left/right
                             phi = Convert.ToDouble(enteredValue);   //converts entered value to a double
                             int temp = Convert.ToInt32(phi);        //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS
                             if (phi < 0)                            //if entered value is less that zero it is a negative number and will move left.
                             {
                                 int positive = Math.Abs(temp);      //must take absolute value of number to enter into moveLeft function
-                                Poseidon.moveLeft(positive);        //missle launcher moves left by amount entered
+                                Poseidon.command_Left(positive);    //missle launcher moves left by amount entered
                             }
                             else
                             {
-                            Poseidon.moveRight(temp);               //if entered value is positive then we move right by amount entered
+                                Poseidon.command_Right(temp);       //if entered value is positive then we move right by amount entered
                             }
-                            
+
                             double theta = 0;                       //create a value to store our theta, which is Z up/down
                             theta = Convert.ToDouble(enteredValue2);
                             int temp2 = Convert.ToInt32(theta);     //simalar to above
-                            if (theta < 0)  
-                            {
-                                int positive = Math.Abs(temp2);
-                                Poseidon.moveDown(positive);
-                            }
-                            else
-                            {
-                                Poseidon.moveUp(temp2);
-                            }          
-                            break;
-                        
-                        case "moveby":
-
-                            phi = 0;                         //create a value to store our phi, which is x,y left/right
-                            phi = Convert.ToDouble(enteredValue);   //converts entered value to a double
-                            temp = Convert.ToInt32(phi);        //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS
-                            if (phi < 0)                            //if entered value is less that zero it is a negative number and will move left.
-                            {
-                                int positive = Math.Abs(temp);      //must take absolute value of number to enter into moveLeft function
-                                Poseidon.moveLeft(positive);        //missle launcher moves left by amount entered
-                            }
-                            else
-                            {
-                                Poseidon.moveRight(temp);               //if entered value is positive then we move right by amount entered
-                            }
-
-                            theta = 0;                       //create a value to store our theta, which is Z up/down
-                            theta = Convert.ToDouble(enteredValue2);
-                            temp2 = Convert.ToInt32(theta);     //simalar to above
                             if (theta < 0)
                             {
                                 int positive = Math.Abs(temp2);
-                                Poseidon.moveDown(positive);
+                                Poseidon.command_Down(positive);
                             }
                             else
                             {
-                                Poseidon.moveUp(temp2);
+                                Poseidon.command_Up(temp2);
                             }
                             break;
-                        
-                        case "reload":
+
+                        case "moveby":
+
+                            phi = 0;                                //create a value to store our phi, which is x,y left/right
+                            phi = Convert.ToDouble(enteredValue);   //converts entered value to a double
+                            temp = Convert.ToInt32(phi);            //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS
+                            if (phi < 0)                            //if entered value is less that zero it is a negative number and will move left.
+                            {
+                                int positive = Math.Abs(temp);      //must take absolute value of number to enter into moveLeft function
+                                Poseidon.command_Left(positive);    //missle launcher moves left by amount entered
+                            }
+                            else
+                            {
+                                Poseidon.command_Right(temp);       //if entered value is positive then we move right by amount entered
+                            }
+
+                            theta = 0;                              //create a value to store our theta, which is Z up/down
+                            theta = Convert.ToDouble(enteredValue2);
+                            temp2 = Convert.ToInt32(theta);         //simalar to above
+                            if (theta < 0)
+                            {
+                                int positive = Math.Abs(temp2);
+                                Poseidon.command_Down(positive);
+                            }
+                            else
+                            {
+                                Poseidon.command_Up(temp2);
+                            }
+                            break;
+
+                        case "reload":                              //resets the missle launchers count to 4
                             Poseidon.reload();
                             break;
-                        
-                        case "load":
+
+                        case "load":                                //lets user select another list of targets to load into game
                             path = enteredValue;
 
                             if (!File.Exists(path))
@@ -158,29 +170,68 @@ namespace SADCL
                             else
                             {
                                 targetList = targetFactory.Product(path);
+                                statusList = targetList;
                                 Console.Write("argghh argghh new targets in sight!!\n\n");
+                            }
+                            break;
+                        
+                        case "scoundrels":
+
+                            for (int i = 0; i < targetList.Count; i++)
+                            {
+                                if (targetList[i].isFriend != true)     //if not a freind print from target list.
+                                {
+                                    Console.Write("Target: " + targetList[i].Name + "\n");
+                                    Console.Write("Friend: No He's a scoundrel with a clever disguise\n");
+                                    Console.Write("Position: " + " x=" + targetList[i].X + ", y=" + targetList[i].Y + ", z=" + targetList[i].Z + "\n");
+                                    Console.Write("Points: " + targetList[i].score + "\n");
+                                    Console.Write("Status: " + targetList[i].Status + "\n");
+                                    Console.Write("\n");
+                                }
+
+                            }
+                            break;
+
+                        case "friends":
+
+                            for (int i = 0; i < targetList.Count; i++)
+                            {
+                                if (targetList[i].isFriend == true)     //if value for out Target isFriend is true he's cool
+                                {
+                                    Console.Write("Target: " + targetList[i].Name + "\n");
+                                    Console.Write("Friend: One of us\n");
+                                    Console.Write("Position: " + " x=" + targetList[i].X + ", y=" + targetList[i].Y + ", z=" + targetList[i].Z + "\n");
+                                    Console.Write("Points: " + targetList[i].score + "\n");
+                                    Console.Write("Status: " + targetList[i].Status + "\n");
+                                    Console.Write("\n");
+                                }
+
                             }
                             break;
 
                         case "kill":
-                                                                                
 
                             if (enteredValue.Length > 0)                        //if caller has entered a name to search 
                             {
-                                for (int i = 0; i < targetList.Count; i++)      //iterate through our TargetList to search for target name if enteredValue is entered.
+                                for (int i = 0; i < statusList.Count; i++)      //iterate through our TargetList to search for target name if enteredValue is entered.
                                 {
-                                    if (enteredValue == targetList[i].Name)     //if the given name is on our targetList 
+                                    if (enteredValue == statusList[i].Name)     //if the given name is on our targetList 
                                     {
-                                        if (targetList[i].isFriend == true)     //if he is a friend dont shoot and display message
+                                        if (statusList[i].isFriend == true)     //if he is a friend dont shoot and display message
                                         {
-                                            Console.Write("Sorry Captain, we don't permit friendly fire, yar");
+                                            Console.Write("Sorry Captain, we don't permit friendly fire, yar!\n");
                                         }
+                                        else if (statusList[i].Status == "Dead")
+                                        {
+                                            Console.Write("Captain, this bloak is already looking dead to me! Nasty luck mate.\n");
+                                        }
+
                                         else                                    //ortherwise he is an enemy fire on coordinates
                                         {
-                                                                                 
+
                                             Console.Write("\nenemy sighted, preparing to fire\n");
-                                            Poseidon.calibrate();               //set missle launcher to firing position
-                                           
+                                            Poseidon.command_reset();               //set missle launcher to firing position
+
                                             double tempX = targetList[i].X;
                                             double tempY = targetList[i].Y;
                                             double tempZ = targetList[i].Z;
@@ -189,50 +240,64 @@ namespace SADCL
                                             //http://www.learningaboutelectronics.com/Articles/Cartesian-rectangular-to-spherical-coordinate-converter-calculator.php#answer
                                             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                                            radius = Math.Sqrt(Math.Pow(tempX, 2) + Math.Pow(tempY, 2)  + Math.Pow(tempZ, 2));  //cartetion product
+                                            radius = Math.Sqrt(Math.Pow(tempX, 2) + Math.Pow(tempY, 2) + Math.Pow(tempZ, 2));  //cartetion product
 
-                                            Console.Write(tempZ);
-                                            theta = (180/ Math.PI) * (Math.Acos(tempZ / radius));       //calculating theta which is our up/down
-                                            phi = (180/ Math.PI) * (Math.Atan2(tempY , tempX)) ;        //calculateing phi which is left/right
 
-                                            Console.Write("Theta =" + theta);
-                                            int t = Convert.ToInt32(phi);        //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS+
-                                            int t2 = Convert.ToInt32(theta); 
+                                            theta = (180 / Math.PI) * (Math.Acos(tempZ / radius));       //calculating theta which is our up/down
+                                            phi = (180 / Math.PI) * (Math.Atan(tempY / tempX));          //calculateing phi which is left/right
 
-                                            
-
-                                            if (phi < 0)                         //if entered value is less that zero it is a negative number and will move left.
+                                            if (tempZ == 0)
                                             {
-                                                int positive = Math.Abs(t);     //must take absolute value of number to enter into moveLeft function
-                                                
-                                                Poseidon.moveLeft(positive);    //missle launcher moves left by amount entered
+                                                theta = 0;
+                                            }
+
+                                            int t = Convert.ToInt32(phi);           //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS+
+                                            int t2 = Convert.ToInt32(theta);
+
+
+
+                                            if (phi < 0)                            //if entered value is less that zero it is a negative number and will move left.
+                                            {
+                                                int positive = Math.Abs(t);         //must take absolute value of number to enter into moveLeft function
+
+                                                Poseidon.command_Left(positive);    //missle launcher moves left by amount entered
                                             }
                                             else
                                             {
-                                                                                                
-                                                Poseidon.moveRight(t);          //if entered value is positive then we move right by amount entered
+
+                                                Poseidon.command_Right(t);          //if entered value is positive then we move right by amount entered
                                             }
 
 
-                                            
+
                                             if (theta < 0)
                                             {
                                                 int positive = Math.Abs(t2);
-                                               
-                                                Poseidon.moveDown(positive);
+
+                                                Poseidon.command_Down(positive);
                                             }
                                             else
                                             {
-                                                
-                                                Poseidon.moveUp(t2);
+
+                                                Poseidon.command_Up(t2);
                                             }
 
-                                            Console.Write("Fire missle here BOOM!!!");
+                                            Poseidon.command_Fire();
+
+
+
+                                            for (i = 0; i < targetList.Count; i++)      //iterate through our TargetList to search for target name if enteredValue is entered.
+                                            {
+                                                if (statusList[i].Name == enteredValue)
+                                                {
+                                                    statusList[i].Status = "Dead";
+                                                }
+                                            }
+
+
+
+                                            Console.Write("\n");
                                         }
-
-
-                                        
-                                        Console.Write("\n");
                                     }
                                 }
                             }
@@ -241,43 +306,11 @@ namespace SADCL
 
 
                         case "status":
-                            Console.WriteLine("Launcher:  \n ");
-                            Console.WriteLine("\tMissiles:  " + Poseidon.load + " of 4 remain");
+                            Console.WriteLine("Launcher: " + Poseidon.name + "\n");
+                            Console.WriteLine("\tMissiles:  " + Poseidon.getMissles() + " of 4 remain");
                             break;
 
-                        case "friends":
-                            
-                                for (int i = 0; i < targetList.Count; i++)
-                                {
-                                    if (targetList[i].isFriend == true)     //if value for out Target isFriend is true he's cool
-                                    {
-                                            Console.Write("Target: "+targetList[i].Name + "\n");
-                                            Console.Write("Friend: One of us\n");
-                                            Console.Write("Position: " + " x=" + targetList[i].X + ", y=" + targetList[i].Y+ ", z=" + targetList[i].Z + "\n");
-                                            Console.Write("Points: " + targetList[i].score + "\n");
-                                            Console.Write("Status: At Large\n");
-                                            Console.Write("\n");
-                                    }
-
-                                }
-                                break;
-                        case "scoundrels":
-
-                                for (int i = 0; i < targetList.Count; i++)
-                                {
-                                    if (targetList[i].isFriend != true)     //if not a freind print from target list.
-                                    {
-                                        Console.Write("Target: " + targetList[i].Name + "\n");
-                                        Console.Write("Friend: No He's a scoundrel with a clever disguise\n");
-                                        Console.Write("Position: " + " x=" + targetList[i].X + ", y=" + targetList[i].Y + ", z=" + targetList[i].Z + "\n");
-                                        Console.Write("Points: " + targetList[i].score + "\n");
-                                        Console.Write("Status: At Large\n");
-                                        Console.Write("\n");
-                                    }
-
-                                }
-                                break;
-                        default:
+                            default:
                             break;
                     }//END Switch case
                 }//END While
@@ -287,4 +320,5 @@ namespace SADCL
             }
         }
     }
+
 }

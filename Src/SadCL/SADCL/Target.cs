@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SADCL
 {
-    class Target
+    class target
     {
         private string name;
         private double Xcord;
@@ -16,11 +16,13 @@ namespace SADCL
         private int flashRate;
         private bool done;
         private int[] targetlist;
+        private string status;
 
-        public Target()  //default constructor, set or bool to false and int array to 7 to keep track of object items
+        public target()  //default constructor, set or bool to false and int array to 8 to keep track of object items
         {
             done = false;
-            targetlist = new int[7];
+            targetlist = new int[8];
+            
         }
 
         public string Name  //getter and setter for target Name
@@ -32,6 +34,7 @@ namespace SADCL
                 targetlist[0] = 1;
             }
         }
+
 
         public double X     //getter and setter for target X coordinate
         {
@@ -94,6 +97,16 @@ namespace SADCL
             }
         }
 
+        public string Status
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+                targetlist[7] = 1;
+            }
+        }
+
         public bool isDone  //getter and setter for target done value, quick loop to see if all values have been set for an object, used by targetFactory to create whole Target object
         {
             get
@@ -101,7 +114,7 @@ namespace SADCL
 
                 int temp = 0;
 
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 8; i++)
                 {
 
                     if (targetlist[i] == 1)
@@ -110,7 +123,7 @@ namespace SADCL
                     }
                 }
 
-                if (temp >= 7)      //Majic number '7' to account for the number of fields/attributes to specify one target
+                if (temp >= 8)      //Majic number '8' to account for the number of fields/attributes to specify one target
                 {
                     done = true;
                 }
@@ -120,22 +133,5 @@ namespace SADCL
             set { done = value; }
         }//END isDone
 
-        //////////////////////////////////////////////////////////////
-        //http://www.dotnetperls.com/string-format
-        //pig Latin Print function
-        //if first letter is consanant move it to end and + "ay"
-        //if first letter is a vowel just add "way" to end of string.
-        //////////////////////////////////////////////////////////////
-
-        //Thanks Leland for the tip on String.Format for simplification for Output handeling
-
-        public override string ToString()
-        {
-            string tempString = "Name={0} \n X={1} \n Y={2} \n Z={3} \n Friend={4} \n Points={5} \n FlashRate={6} \n ";
-
-            tempString = String.Format(tempString, name, Xcord, Xcord, Zcord, friend, points, flashRate);
-
-            return tempString;
-        }
     }//END Class Target
 }
