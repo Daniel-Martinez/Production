@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SADCL
 {
-    class target
+    class target                    //target class to create target objects
     {
         private string name;
         private double Xcord;
