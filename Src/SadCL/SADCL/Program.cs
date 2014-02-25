@@ -45,21 +45,47 @@ namespace SADCL
 
                 List<target> targetList = targetFactory.Product(path);    //object targetList is a product of Factory containing all Target data read in from file
 
-                singleton tempObj = singleton.getInstance();              //creating a singlton object to keep track of out target list with status of whos dead and whos at large
+                singletonTargetManager tempObj = singletonTargetManager.getInstance();              //creating a singlton object to keep track of out target list with status of whos dead and whos at large
                 List<target> statusList = tempObj.getList();
 
                 statusList = targetList;                                  //set our singleton List equal to list generated from our target factory.
 
-                missileFactory makeLauncher = new missileFactory();              // missile launcher is created
+                missileFactory makeLauncher = new missileFactory();      // missile launcher is created
 
-                MissileLauncher Poseidon = makeLauncher.product();
-                                               // fully loaded and ready to fire. 
-                Poseidon.name = "Beef_Cake";                     // name turret
-                Poseidon.reload();
+
+                MissileLauncherType test;                               //missle launcher type object
+                ImissileCommand Poseidon;                               //object type to keep in scope
+        
+                Console.Write("Type the folling to create launcher\n\tR for real\n\tM for mock\n\n");  //what type of launcher do you want?
+
+                string type = Console.ReadLine().ToLower();
+                if (type == "r")
+                {
+                   test = MissileLauncherType.realLauncher;
+                   Poseidon = makeLauncher.create(test);
+                 
+                }
+                else if (type == "m")
+                {
+                   test = MissileLauncherType.mockLauncher;
+                   Poseidon = makeLauncher.create(test);
+                   
+                }
+                else
+                {
+                    return;
+                }
+
+
+                Poseidon.setName("Beef_Cake");            // name turret      
+                Poseidon.reload();                        // fully loaded and ready to fire. 
+
                 string input = "";
                 string convInput = "";                           //Holds value for string when Split
                 string enteredValue = "";                        //Holds user entered value for menu
                 string enteredValue2 = "";                       //Holds user entered value for menu
+                double phi = 0;
+                double theta = 0;
 
 
                 /********************************************************************************************************************************************************************/
@@ -99,47 +125,63 @@ namespace SADCL
                             break;
 
                         case "move":
+                            double mPhi = 0;
+                            double mTheta = 0;
+                                                                     //create a value to store our phi, which is x,y left/right
+                            mPhi = Convert.ToDouble(enteredValue);   //converts entered value to a double
 
-                            double phi = 0;                         //create a value to store our phi, which is x,y left/right
-                            phi = Convert.ToDouble(enteredValue);   //converts entered value to a double
-                            int temp = Convert.ToInt32(phi);        //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS
-                            if (phi < 0)                            //if entered value is less that zero it is a negative number and will move left.
+                            int temp = Convert.ToInt32(mPhi);        //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS
+                            if (mPhi <= phi)                         //if entered value is less that zero it is a negative number and will move left.
                             {
-                                int positive = Math.Abs(temp);      //must take absolute value of number to enter into moveLeft function
+                                double left = phi - mPhi;
+                                int positive = Convert.ToInt32(left);
+                                positive = Math.Abs(positive);      //must take absolute value of number to enter into moveLeft function
                                 Poseidon.command_Left(positive);    //missle launcher moves left by amount entered
+                                phi = phi - positive;
                             }
                             else
                             {
-                                Poseidon.command_Right(temp);       //if entered value is positive then we move right by amount entered
+                                double right = mPhi - phi;
+                                int positive = Convert.ToInt32(right);
+                                positive = Math.Abs(positive);      //must take absolute value of number to enter into moveLeft function
+                                Poseidon.command_Right(positive);       //if entered value is positive then we move right by amount entered
+                                phi = phi + positive;
                             }
+                            /* check to make sure values are entered */
+                            //create a value to store our theta, which is Z up/down
+                            //mTheta = Convert.ToDouble(enteredValue2);
+                            int temp2 = Convert.ToInt32(mTheta);     //simalar to above
 
-                            double theta = 0;                       //create a value to store our theta, which is Z up/down
-                            theta = Convert.ToDouble(enteredValue2);
-                            int temp2 = Convert.ToInt32(theta);     //simalar to above
-                            if (theta < 0)
+                            if (mTheta <= theta)
                             {
+                                temp2 = Convert.ToInt32(theta - mTheta);
                                 int positive = Math.Abs(temp2);
                                 Poseidon.command_Down(positive);
+                                theta = theta - positive;
                             }
                             else
                             {
-                                Poseidon.command_Up(temp2);
+                                temp2 = Convert.ToInt32(mTheta - theta);
+                                int positive = Math.Abs(temp2);
+                                Poseidon.command_Up(positive);
+                                theta = theta + positive;
                             }
                             break;
 
                         case "moveby":
-
-                            phi = 0;                                //create a value to store our phi, which is x,y left/right
-                            phi = Convert.ToDouble(enteredValue);   //converts entered value to a double
-                            temp = Convert.ToInt32(phi);            //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS
-                            if (phi < 0)                            //if entered value is less that zero it is a negative number and will move left.
+                            //phi = 0;                                //create a value to store our phi, which is x,y left/right
+                            mPhi = Convert.ToDouble(enteredValue);   //converts entered value to a double
+                            temp = Convert.ToInt32(mPhi);            //converts to int because our missleLauncher only understands integers, ### WE NEED TO ASK ABOUT THIS
+                            if (mPhi <= 0)                            //if entered value is less that zero it is a negative number and will move left.
                             {
                                 int positive = Math.Abs(temp);      //must take absolute value of number to enter into moveLeft function
                                 Poseidon.command_Left(positive);    //missle launcher moves left by amount entered
+                                phi = phi - positive;
                             }
                             else
                             {
                                 Poseidon.command_Right(temp);       //if entered value is positive then we move right by amount entered
+                                phi = phi + temp;
                             }
 
                             theta = 0;                              //create a value to store our theta, which is Z up/down
@@ -155,6 +197,7 @@ namespace SADCL
                                 Poseidon.command_Up(temp2);
                             }
                             break;
+
 
                         case "reload":                              //resets the missle launchers count to 4
                             Poseidon.reload();
@@ -306,7 +349,7 @@ namespace SADCL
 
 
                         case "status":
-                            Console.WriteLine("Launcher: " + Poseidon.name + "\n");
+                            Console.WriteLine("Launcher: " + Poseidon.getName() + "\n");
                             Console.WriteLine("\tMissiles:  " + Poseidon.getMissles() + " of 4 remain");
                             break;
 

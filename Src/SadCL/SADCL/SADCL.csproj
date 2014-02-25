@@ -48,14 +48,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="abstractMissileLauncher.cs" />
+    <Compile Include="missileLauncher.cs" />
     <Compile Include="ImissileCommand.cs" />
     <Compile Include="missileFactory.cs" />
-    <Compile Include="missileLauncher.cs" />
-    <Compile Include="mockMissileLauncher.cs" />
+    <Compile Include="realLauncher.cs" />
+    <Compile Include="mockLauncher.cs" />
     <Compile Include="program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="singleton.cs" />
+    <Compile Include="singletonTargetManager.cs" />
     <Compile Include="target.cs" />
     <Compile Include="targetFactory.cs" />
   </ItemGroup>

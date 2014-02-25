@@ -22,7 +22,7 @@ namespace SADCL
         {
             done = false;
             targetlist = new int[8];
-            
+             
         }
 
         public string Name  //getter and setter for target Name
