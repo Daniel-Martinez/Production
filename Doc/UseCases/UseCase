@@ -1,0 +1,20 @@
+Use Cases
+	a. Starting a Game
+		i. To start a game we first need to validate that we have a link to the game server by 	   	                  looking at link light.
+		ii. To interpret feed from server with information of game to be played. 
+		iii. Do configurations based on game that is to be played. 
+		iv. Push the start button which will in turn let the game server know we have initialized a game. 
+	b. Stopping a Game
+		i. To stop a game we simple push the stop button on the upper right hand corner. 
+		ii. There is no continue button so the user must now refer to starting a game to begin a new game. 
+	c. Changing a Game
+		i. User will click on Stop, to stop a game. He or she will then refer to starting a game-which includes clicking again on the Start button.
+	d. Manual Control of Turret
+		i. When the game entitles it the user will use the Up, Down, Left, Right arrows to adjust their aim of targets. 
+		ii. The user will use the big button in the bottom of the window labeled fire to fire one missile at a time. He or she will click on the button and wait to see if they hit a target. 
+	e. Automated Turret Control
+		i. When an automated game is entered the user will simple push start and wait until the turret has acquired all enemy targets and fired upon them. 
+	f. Switching between Shell and GUI
+		i. To switch between the console and user will simply click on the button labeled shell. 
+		ii. This in turn will redirect them to the command line interface. 
+		iii. From here the user will be able to go back to the GUI interface.
