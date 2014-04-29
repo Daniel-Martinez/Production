@@ -1,0 +1,89 @@
+Formal User Cases
+UserID = 1
+Name = Starting a Game 
+Pre-Condition = GameClient is connected to the GameServer, Game/ Target information is available in our Game Text Area, Directional buttons have been used the aim our Dream Cheeky based on our Web Camera view.  Ready to attack target
+Normal Steps:
+    	1. Link with Server.
+    	2. Verify Game type.   	
+	3. Click on start buton.
+	4. Calibrate missile launcher. 
+    	5. If game is manual- control directional buttons until we have a firing position.
+    	6. Click Fire button.
+	7. Continue until you have ran out of bullets
+Alternative Steps:
+    	1. if Link with server not achieved troubleshoot Link.
+    	2. if no detail from GameServer verify with magistrate that Game info has been setup.
+    	3.  If missile Launcher is non-responsive power cycle and verify GameClient can communicate. 
+    	4. If directional buttons don't work follow step 3. 
+    	5.  If fire button doesn't work, verify missile is not stuck.
+Post-Conditions
+    	1. Game is in play mode (ready to play specified game).
+
+UserID = 2
+Name = Stopping a Game
+Pre-Condition: the game is in play mode and some problem has arised.
+Normal Steps:
+	1. User presses the Stop button.
+	2. Game is stopped and reset back to the normal state of the game.
+	3. Game is ready for new or same game type.
+Alternative Steps:
+	1. If game does not stop user will have to exit the application and reenter the program. 
+	2. If game is stopped but not reset user will have to again exit the application and reenter the program. 
+Post-Condition:
+	1. Game is ended we are back in the start game mode. 
+
+
+UserID = 3
+Name = Changing a game
+Pre-Condition: the game is over or the user wants to start a new game.
+Normal Steps:
+	1. User presses the Stop button.
+	2. User waits for game to stop.
+	3. User will then click the start button which will begin a new game type. 
+Alternative Steps:
+	1. If game doesn’t stop user will have to exit the application and reenter the program.
+Post-Condition:
+	1. Game is now in the start game mode.
+
+UserID = 4
+Name = Manual Control of Turret
+Pre-Condition: Game is in play mode.
+Normal Steps:
+	1. User will simply click on the start button to initiate the game. 
+	2. Updates will pop up on the twitter feed. 
+	3. The shots left will be updated as well as the score and time.
+	4. The camera feed will then begin uploading.
+	5. All shots will be fired by user.
+	6. Game will then finish.
+Alternative Steps:
+	1. If game doesn’t start then just exit the program and restart it. 
+	2. If camera fails to upload image make sure cables are connected. 
+Post-Condition:
+	1. Game is now in the start game mode. 
+
+UserID = 5
+Name = Automated Turret 
+Pre-Condition: Game is in play mode
+Normal Steps:
+	1. User will simply click on the start button to initiate the game. 
+	2. Updates will pop up on the twitter feed. 
+	3. The shots left will be updated as well as the score and time.
+	4. The camera feed will then begin uploading.
+	5. All shots will be fired automatic.
+	6. Game will then finish.
+Alternative Steps:
+	1. If game doesn’t start then just exit the program and restart it. 
+	2. If camera fails to upload image make sure cables are connected.
+Post-Condition:
+	1. Game is now in the start game mode.
+
+UserID = 6
+Name= Switching to Shell
+Pre-Condition: User is in the GUI
+Normal Steps: 
+	1. User will click on the shell button to change to the command line interface.
+	2. User will continue to use command line or transfer back to the GUI. 
+Alternative Steps:
+	1. If game doesn’t change to the command line when shell button is clicked then the game should be restarted and the shell button can be tried again. If problem continues then user will have no other choice but to continue in GUI mode.
+Post-Condition:
+	1. Game is now in command line interface mode. 
